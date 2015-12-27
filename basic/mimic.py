@@ -63,7 +63,6 @@ def mimic_dict(filename):
 def print_mimic(mimic_dict, word):
   """Given mimic dict and start word, prints 200 random words."""
   words = random.choice(mimic_dict.get(word, list(mimic_dict.keys())))
-  print(words)
   return words
 
 
