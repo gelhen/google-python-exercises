@@ -38,45 +38,56 @@ print_words() and print_top().
 """
 
 import sys
-from operator import itemgetter
+from collections import OrderedDict, Counter
 
-def get_words(filename):
-    words = {}
-    text = ''
-    with open(filename) as file:
-        text = file.read().lower().split()
-        for word in text:
-            if not words.get(word):
-                words[word] = text.count(word)
-    return words
 
-def print_words(filename):
-    words = sorted(get_words(filename).items(), key=itemgetter(0))
-    for k, v in words:
-        print(k, str(v))
-
-def print_top(filename):
-    words = sorted(get_words(filename).items(), key=itemgetter(1), reverse=True )
-    #for k,v in words:
-    #   print(v, k)
-    for idx in range(0,20):
-        print('{0} {1}'.format(words[idx][1], words[idx][0]))
-
+# +++your code here+++
 # Define print_words(filename) and print_top(filename) functions.
 # You could write a helper utility function that reads a file
 # and builds and returns a word/count dict for it.
 # Then print_words() and print_top() can just call the utility function.
 
+###
+
 # This basic command line argument parsing code is provided and
 # calls the print_words() and print_top() functions which you must define.
+
+def help_file(filename):
+    words = {}
+    file =  open(filename)
+    file = file.read().lower().split()
+    for w in file:
+        if w in  words:
+            words[w] += 1
+        else:
+            words[w] = 1
+    return words
+
+
+
+def words(file):
+    words_dict = help_file(file)
+    words_sorted =  OrderedDict(sorted(words_dict.items(), key=lambda x:x[0]))
+
+    for k,v in words_sorted.items():
+        print(k, ' = ', v)
+
+
+def print_top(file):
+    words_dict = help_file(file)
+    words_sorted = OrderedDict(sorted(words_dict.items(), key=lambda x:x[1], reverse=True))
+
+    print(Counter.most_common(words_sorted, 20))
+
 def main():
     if len(sys.argv) != 3:
         print('usage: ./wordcount.py {--count | --topcount} file')
         sys.exit(1)
+
     option = sys.argv[1]
     filename = sys.argv[2]
     if option == '--count':
-        print_words(filename)
+        words(filename)
     elif option == '--topcount':
         print_top(filename)
     else:

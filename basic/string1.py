@@ -24,17 +24,8 @@
 # So donuts(5) returns 'Number of donuts: 5'
 # and donuts(23) returns 'Number of donuts: many'
 def donuts(count):
-    retorno = str(count)
-    if count >= 10:
-        retorno = 'many'
-    return 'Number of donuts: %s' % retorno
+    return 'Number of donuts: %s' % (count < 10 and count or 'many')
 
-def donuts(count):
-    return 'Number of donuts: {0}'.format(count if count < 10 else 'many' )
-
-def donuts(count):
-    values = {n: str(n) for n in range (1,10)}
-    return 'Number of donuts: ' + values.get(count, 'many')
 
 # B. both_ends
 # Given a string s, return a string made of the first 2
@@ -42,10 +33,10 @@ def donuts(count):
 # so 'spring' yields 'spng'. However, if the string length
 # is less than 2, return instead the empty string.
 def both_ends(s):
-    retorno = ''
-    if (len(s)>2):
-        retorno = '%s%s' % (s[0:2], s[-2:])
-    return retorno
+    length = len(s)
+    if (length < 2):
+        return ''
+    return s[:2] + s[len(s)-2:]
 
 
 # C. fix_start
@@ -58,10 +49,9 @@ def both_ends(s):
 # Hint: s.replace(stra, strb) returns a version of string s
 # where all instances of stra have been replaced by strb.
 def fix_start(s):
-    retorno = ''
-    if (len(s)>=1):
-        retorno = '%s%s' % (s[0], s[1:].replace(s[0], '*'))
-    return retorno
+    # +++your code here+++
+    first = s[0]
+    return first + s[1:].replace(first, '*')
 
 
 # D. MixUp
@@ -72,12 +62,10 @@ def fix_start(s):
 #   'dog', 'dinner' -> 'dig donner'
 # Assume a and b are length 2 or more.
 def mix_up(a, b):
-    retorno = '%s %s' % (b[0:2]+a[2:], a[0:2]+b[2:])
-    return retorno
-
-def mix_up(a, b):
-    retorno = '{}{} {}{}'.format(b[0:2], a[2:], a[0:2], b[2:])
-    return retorno
+    # +++your code here+++
+    first2_a = a[:2]
+    first2_b = b[:2]
+    return '{} {}'.format(first2_b + a[2:], first2_a + b[2:])
 
 
 # Provided simple test() function used in main() to print

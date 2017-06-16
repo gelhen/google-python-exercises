@@ -16,17 +16,10 @@
 # add 'ly' instead.
 # If the string length is less than 3, leave it unchanged.
 # Return the resulting string.
-from math import ceil
-
 def verbing(s):
-    retorno = ''
-    if (len(s) >=3 and s[-3:] != 'ing'):
-        retorno = s + 'ing'
-    elif (len(s) >=3 and s[-3:] == 'ing'):
-        retorno = s + 'ly'
-    else:
-        retorno = s
-    return retorno
+    if (len(s) >= 3):
+        return s[-3:] == 'ing' and s + 'ly' or s + 'ing'
+    return s
 
 
 # E. not_bad
@@ -38,14 +31,12 @@ def verbing(s):
 # So 'This dinner is not that bad!' yields:
 # This dinner is good!
 def not_bad(s):
-    retorno = ''
-    if (s.find('not') > 0 and s.find('bad') > s.find('not')):
-        inicio = s.find('not')
-        fim    = s.find('bad')+3
-        retorno = s.replace(s[inicio:fim], 'good')
-    else:
-        retorno = s
-    return retorno
+    first_not = s.find('not')
+    bad = s.find('bad')
+    if first_not > 0 and bad > 0 and first_not < bad:
+        return s[:first_not] + 'good' + s[bad+3:]
+
+    return s
 
 
 # F. front_back
@@ -56,17 +47,16 @@ def not_bad(s):
 # Given 2 strings, a and b, return a string of the form
 #  a-front + b-front + a-back + b-back
 def front_back(a, b):
-    novaString = ''
-    lenA = len(a)
-    lenB = len(b)
-    if (len(a) == len(b)):
-        novaString = a[:lenA/2] + b[0:lenB/2] + a[lenA/2:] + b[lenB/2:]
-    elif ((lenA%2) >= 0):
-        metadeA = ceil(lenA/2)
-        metadeC = ceil(lenB/2)
-        novaString = a[:metadeA] + b[:metadeC] + a[metadeA:] + b[metadeC:]
+    from math import floor
+    a_first = floor(len(a)/2) + len(a) % 2
+    b_first = floor(len(b)/2) + len(b) % 2
+    #
+    a_front = a[:a_first]
+    a_back = a[a_first:]
+    b_front = b[:b_first]
+    b_back = b[b_first:]
+    return '{}{}{}{}'.format(a_front, b_front, a_back, b_back)
 
-    return novaString
 
 # Simple provided test() function used in main() to print
 # what each function returns vs. what it's supposed to return.

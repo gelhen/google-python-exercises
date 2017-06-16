@@ -47,23 +47,40 @@ import sys
 
 def mimic_dict(filename):
   """Returns mimic dict mapping each word to list of words which follow it."""
-  with open(filename) as file:
-    mimic = {}
-    words = file.read().split()
-
-    for idx, word in enumerate(words):
-      #SE A PALAVRA NAO EXISTE COMO CHAVE CRIA CHAVE E ATRIBUI LISTA VAZIA
-      if (not mimic.get(word)):
-        mimic[word] = []
-      if idx +1 < len(words):
-        mimic[word].append(words[idx + 1])
+  file = open(filename)
+  text = file.read().lower().split()
+  mimic = dict()
+  #
+  for idx, word in enumerate(text):
+      value = idx + 1 < len(text) and text[idx + 1] or ''
+      if len(mimic) == 0:
+          mimic[''] = [word]
+          mimic[word] = [value]
+      elif word in mimic:
+          mimic[word].append(value)
+      else:
+          mimic[word] = [value]
   return mimic
+
+def mimic_random(mimic_dict, word):
+    """Get a random word in thh mimic dict"""
+    _word = random.choice(mimic_dict.get(word))
+
+    return _word
 
 
 def print_mimic(mimic_dict, word):
-  """Given mimic dict and start word, prints 200 random words."""
-  words = random.choice(mimic_dict.get(word, list(mimic_dict.keys())))
-  return words
+    """Given mimic dict and start word, prints 200 random words."""
+    words = ''
+    last_word = word
+    i = 0
+    while i < 200:
+        last_word = mimic_random(mimic_dict, last_word)
+        if words:
+            words += ' '
+        words += last_word
+        i +=1
+    return words
 
 
 # Provided main(), calls mimic_dict() and mimic()
@@ -73,7 +90,7 @@ def main():
     sys.exit(1)
 
   dict = mimic_dict(sys.argv[1])
-  print_mimic(dict, '')
+  print(print_mimic(dict, ''))
 
 
 if __name__ == '__main__':
