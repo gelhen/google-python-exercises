@@ -64,7 +64,6 @@ def help_file(filename):
     return words
 
 
-
 def words(file):
     words_dict = help_file(file)
     words_sorted =  OrderedDict(sorted(words_dict.items(), key=lambda x:x[0]))
